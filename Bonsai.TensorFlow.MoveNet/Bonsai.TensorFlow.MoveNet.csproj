@@ -21,6 +21,14 @@
              PackagePath="content" />
     <Content Include="..\Externals\Networks\movenet_singlepose_lightning_v4\movenet_singlepose_lightning_v4.pb"
              Link="movenet_singlepose_lightning_v4.pb" PackagePath="content" />
+    <Content Include="..\Externals\Networks\movenet_singlepose_thunder_v4\LICENSE" Link="LICENSE"
+             PackagePath="content" />
+    <Content Include="..\Externals\Networks\movenet_singlepose_thunder_v4\movenet_singlepose_thunder_v4.pb"
+             Link="movenet_singlepose_thunder_v4.pb" PackagePath="content" />
+    <Content Include="..\Externals\Networks\movenet_singlepose_lightning_v4\LICENSE" Link="LICENSE"
+             PackagePath="content" />
+    <Content Include="..\Externals\Networks\movenet_multipose_lightning_v1\movenet_multipose_lightning_v1.pb"
+             Link="movenet_multipose_lightning_v1.pb" PackagePath="content" />
   </ItemGroup>
 
   <ItemGroup>

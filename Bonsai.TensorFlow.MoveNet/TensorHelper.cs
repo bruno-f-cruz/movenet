@@ -60,11 +60,23 @@ namespace Bonsai.TensorFlow.MoveNet
                 {
                     resizeTemp = new IplImage(tensorSize, frame.Depth, frame.Channels);
                 }
-
                 CV.Resize(frame, resizeTemp);
                 frame = resizeTemp;
             }
+            return frame;
+        }
 
+        public static IplImage EnsureFrameSizeAndPad(IplImage frame, Size tensorSize, ref IplImage resizeTemp)
+        {
+            if (tensorSize != frame.Size)
+            {
+                if (resizeTemp == null || resizeTemp.Size != tensorSize)
+                {
+                    resizeTemp = new IplImage(tensorSize, frame.Depth, frame.Channels);
+                }
+                CV.Resize(frame, resizeTemp);
+                frame = resizeTemp;
+            }
             return frame;
         }
 
