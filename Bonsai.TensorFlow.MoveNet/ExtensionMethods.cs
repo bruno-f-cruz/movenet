@@ -105,7 +105,6 @@ namespace Bonsai.TensorFlow.MoveNet
                 default: throw new ArgumentException("Unsupported color conversion code.");
             }
         }
-
     }
 }
 

@@ -11,7 +11,7 @@ using System.IO;
 namespace Bonsai.TensorFlow.MoveNet
 {
     [Description("Performs human pose estim ation using a MoveNet network")]
-    public class PredictMoveNet : Transform<IplImage, Pose>
+    public class PredictSinglePoseLightning : Transform<IplImage, Pose>
     {
         private int InputSize = 192;
 
@@ -28,10 +28,8 @@ namespace Bonsai.TensorFlow.MoveNet
                 var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 const string ModelName = "movenet_singlepose_lightning_v4.pb";
                 var defaultPath = Path.Combine(basePath, ModelName);
-                Console.WriteLine(defaultPath);
 
                 if (!File.Exists(defaultPath)) defaultPath = Path.Combine(basePath, "..\\..\\content\\", ModelName);
-                Console.WriteLine(defaultPath);
 
                 // check if pb is next to dll if not:
                 var graph = TensorHelper.ImportModel(defaultPath, out TFSession session);
@@ -93,47 +91,6 @@ namespace Bonsai.TensorFlow.MoveNet
         public override IObservable<Pose> Process(IObservable<IplImage> source)
         {
             return Process(source.Select(frame => new IplImage[] { frame }));
-        }
-    }
-
-    public class BodyPart
-    {
-        public string Name;
-        public Point2f Position;
-        public float Confidence;
-    }
-
-    public class Pose : KeyedCollection<string, BodyPart>
-    {
-        public string[] BodyPartLabels = {
-            "nose",
-            "left_eye",
-            "right_eye",
-            "left_ear",
-            "right_ear",
-            "left_shoulder",
-            "right_shoulder",
-            "left_elbow",
-            "right_elbow",
-            "left_wrist",
-            "right_wrist",
-            "left_hip",
-            "right_hip",
-            "left_knee",
-            "right_knee",
-            "left_ankle",
-            "right_ankle"};
-
-        public Pose(IplImage image)
-        {
-            Image = image;
-        }
-
-        public IplImage Image { get; }
-
-        protected override string GetKeyForItem(BodyPart item)
-        {
-            return item.Name;
         }
     }
 }
