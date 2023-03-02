@@ -39,3 +39,51 @@ The output of the model (`Pose`) can be indexed using one of the following 17 hu
 - left_ankle
 - right_ankle
 ```
+
+## How to export the .pb files
+
+The pre-trained models are provided as .pb files. If you want to export your own .pb files, you can use the following code:
+
+```python
+
+import tensorflow as tf
+import tensorflow_hub as hub
+from tensorflow.python.framework.convert_to_constants import convert_variables_to_constants_v2
+
+## Pick one of the networks
+networkurl = r"https://tfhub.dev/google/movenet/singlepose/lightning/4"
+#networkurl = r"https://tfhub.dev/google/movenet/singlepose/thunder/4"
+#networkurl = r"https://tfhub.dev/google/movenet/multipose/lightning/1"
+
+## Download the network
+module = hub.load(networkurl)
+networkName = networkurl.split("/")[-3] + "_" + networkurl.split("/")[-2]
+
+## Freeze the network
+model = module.signatures['serving_default']
+full_model = tf.function(lambda x: model(x))
+full_model = full_model.get_concrete_function(
+    tf.TensorSpec(model.inputs[0].shape, model.inputs[0].dtype))
+frozen_func = convert_variables_to_constants_v2(full_model)
+frozen_func.graph.as_graph_def()
+
+## Print the network layers and output/input specs
+layers = [op.name for op in frozen_func.graph.get_operations()]
+print("-" * 50)
+print("Frozen model layers: ")
+for layer in layers:
+    print(layer)
+
+print("-" * 50)
+print("Frozen model inputs: ")
+print(frozen_func.inputs)
+print("Frozen model outputs: ")
+print(frozen_func.outputs)
+
+# Save frozen graph from frozen ConcreteFunction to hard drive
+tf.io.write_graph(graph_or_graph_def=frozen_func.graph,
+                logdir="./frozen_models",
+                name=f"frozen_graph{networkName}.pb",
+                as_text=False)
+
+```
