@@ -40,6 +40,12 @@ The output of the model (`Pose`) can be indexed using one of the following 17 hu
 - right_ankle
 ```
 
+
+## How to download pre-exported networks:
+
+Network files are available from this [link](https://neurogears-my.sharepoint.com/:f:/g/personal/b_cruz_neurogears_org/EhCLgMqeieRJhV1DJeZJTzUBBV4gTgefBLHYBxG_A_lB6g?e=B1BGBq). They should be placed inside "./Externals/Networks" folder.
+
+
 ## How to export the .pb files
 
 The pre-trained models are provided as .pb files. If you want to export your own .pb files, you can use the following code:
@@ -88,5 +94,3 @@ tf.io.write_graph(graph_or_graph_def=frozen_func.graph,
 
 ```
 
-
-# Network files are available from this [link](https://neurogears-my.sharepoint.com/:f:/g/personal/b_cruz_neurogears_org/EhCLgMqeieRJhV1DJeZJTzUBBV4gTgefBLHYBxG_A_lB6g?e=B1BGBq). They should be placed inside "./Externals/Networks" folder.
