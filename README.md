@@ -87,3 +87,6 @@ tf.io.write_graph(graph_or_graph_def=frozen_func.graph,
                 as_text=False)
 
 ```
+
+
+# Network files are available from this [link](https://neurogears-my.sharepoint.com/:f:/g/personal/b_cruz_neurogears_org/EhCLgMqeieRJhV1DJeZJTzUBBV4gTgefBLHYBxG_A_lB6g?e=B1BGBq). They should be placed inside "./Externals/Networks" folder.
