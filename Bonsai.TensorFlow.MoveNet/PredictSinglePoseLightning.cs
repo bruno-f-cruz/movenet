@@ -4,19 +4,45 @@ using System.Linq;
 using System.Reactive.Linq;
 using OpenCV.Net;
 using TensorFlow;
-using System.Collections.ObjectModel;
 using System.Reflection;
 using System.IO;
 
 namespace Bonsai.TensorFlow.MoveNet
 {
-    [Description("Performs human pose estim ation using a MoveNet network")]
+    /// <summary>
+    /// Represents an operator that performs pose estimation on an 192x192 RGB image
+    /// by running inference on a "movenet_singlepose_lightning_v4" network. The network
+    /// will identify a single skeleton in the image.
+    /// </summary>
+    /// <seealso cref="PredictSinglePoseThunder"/>
+    /// <seealso cref="PredictMultiPoseLightning"/>
+    [Description("Performs human pose estimation using a MoveNet network")]
     public class PredictSinglePoseLightning : Transform<IplImage, Pose>
     {
-        private int InputSize = 192;
+        /// <summary>
+        /// Expected input image size.
+        /// </summary>
+        private int InputSize= 192;
 
+        /// <summary>
+        /// Gets or sets a value specifying the confidence threshold used to discard predicted
+        /// body part positions. If no value is specified, all estimated positions are returned.
+        /// </summary>
+        [Range(0, 1)]
+        [Editor(DesignTypes.SliderEditor, DesignTypes.UITypeEditor)]
+        [Description("Specifies the confidence threshold used to discard predicted body part positions. If no value is specified, all estimated positions are returned.")]
         public float MinimumConfidence { get; set; } = 0;
 
+        /// <summary>
+        /// Performs markerless, single instance, human pose estimation for each array
+        /// of images in an observable sequence using a "movenet_singlepose_lightning_v4" model.
+        /// </summary>
+        /// <param name="source">The sequence of image batches from which to extract the poses.</param>
+        /// <returns>
+        /// A sequence of <see cref="Pose"/> objects representing the results
+        /// of pose estimation for each image batch in the <paramref name="source"/>
+        /// sequence.
+        /// </returns>
         private IObservable<Pose> Process(IObservable<IplImage[]> source)
         {
             return Observable.Defer(() =>
@@ -31,10 +57,8 @@ namespace Bonsai.TensorFlow.MoveNet
 
                 if (!File.Exists(defaultPath)) defaultPath = Path.Combine(basePath, "..\\..\\content\\", ModelName);
 
-                // check if pb is next to dll if not:
                 var graph = TensorHelper.ImportModel(defaultPath, out TFSession session);
                 
-                // Expected input size
                 var tensorSize = new Size(InputSize, InputSize);
                 
                 return source.Select(input =>
@@ -88,6 +112,16 @@ namespace Bonsai.TensorFlow.MoveNet
             });
         }
 
+        /// <summary>
+        /// Performs markerless, single instance, human pose estimation for each
+        /// image in an observable sequence using a "movenet_singlepose_lightning_v4" model.
+        /// </summary>
+        /// <param name="source">The sequence of image batches from which to extract the poses.</param>
+        /// <returns>
+        /// A sequence of <see cref="Pose"/> objects representing the results
+        /// of pose estimation for each image in the <paramref name="source"/>
+        /// sequence.
+        /// </returns>
         public override IObservable<Pose> Process(IObservable<IplImage> source)
         {
             return Process(source.Select(frame => new IplImage[] { frame }));

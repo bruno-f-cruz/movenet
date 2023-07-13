@@ -13,7 +13,6 @@ namespace Bonsai.TensorFlow.MoveNet
             {
                 unsafe
                 {
-
                     byte[] GPUConfig = new byte[] { 0x32, 0x02, 0x20, 0x01 };
                     fixed (void* ptr = &GPUConfig[0])
                     {
