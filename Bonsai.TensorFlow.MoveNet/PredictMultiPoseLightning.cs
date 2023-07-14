@@ -50,6 +50,7 @@ namespace Bonsai.TensorFlow.MoveNet
                 IplImage resizeTemp = null;
                 TFTensor tensor = null;
                 TFSession.Runner runner = null;
+                var availableBodyParts = ExtensionMethods.GetBodyParts();
 
                 var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 const string ModelName = "movenet_multipose_lightning_v1.pb";
@@ -109,7 +110,7 @@ namespace Bonsai.TensorFlow.MoveNet
                                 part.Position.X = float.NaN;
                                 part.Position.Y = float.NaN;
                             }
-                            part.Name = pose.BodyPartLabels[i];
+                            part.Name = availableBodyParts[i];
                             pose.Add(part);
                         }
                         poseCollection[j] = pose;
