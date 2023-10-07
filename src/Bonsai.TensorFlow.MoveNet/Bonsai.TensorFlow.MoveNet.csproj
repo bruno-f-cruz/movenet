@@ -11,15 +11,18 @@
 
   <ItemGroup>
     <Content Include="Networks\LICENSE" PackagePath="content" />
-    <Content Include="Networks\movenet_singlepose_lightning_v4.pb" PackagePath="content">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Networks\movenet_singlepose_thunder_v4.pb" PackagePath="content">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Networks\movenet_multipose_lightning_v1.pb" PackagePath="content">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Networks\movenet_singlepose_lightning_v4.pb"
+          Link="movenet_singlepose_lightning_v4.pb"
+          CopyToOutputDirectory="Always"
+          PackagePath="content" />
+    <Content Include="Networks\movenet_singlepose_thunder_v4.pb"
+          Link="movenet_singlepose_thunder_v4.pb"
+          CopyToOutputDirectory="Always"
+          PackagePath="content" />
+    <Content Include="Networks\movenet_multipose_lightning_v1.pb"
+          Link="movenet_multipose_lightning_v1.pb"
+          CopyToOutputDirectory="Always"
+          PackagePath="content" />
   </ItemGroup>
 
   <ItemGroup>
