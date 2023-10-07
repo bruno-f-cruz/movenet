@@ -16,7 +16,7 @@ After downloading the native TensorFlow binary and cuDNN, you can follow these s
 
 The library already includes a pre-trained [MoveNet](https://tfhub.dev/google/movenet/singlepose/lightning/4) .pb file that is loaded when using the `PredictMoveNet` operator. In order to run inference on an incoming image, simply connect a node that provides an `IplImage` type to `PredictMoveNet`. E.g:
 
-![WorkflowExample](./Assets/workflow_example.svg)
+![WorkflowExample](./docs/images/workflow_example.svg)
 
 The output of the model (`Pose`) can be indexed using one of the following 17 human `bodypart` keypoints:
 
