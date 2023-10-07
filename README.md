@@ -14,7 +14,7 @@ After downloading the native TensorFlow binary and cuDNN, you can follow these s
 
 ## How to use
 
-The library already includes a pre-trained [MoveNet](https://tfhub.dev/google/movenet/singlepose/lightning/4) .pb file that is loaded when using the `PredictMoveNet` operator. In order to run inference on an incoming image, simply connect a node that provides an `IplImage` type to `PredictMoveNet`. E.g:
+The package already includes a pre-trained [MoveNet](https://tfhub.dev/s?q=movenet) .pb file that is loaded when using the `PredictMoveNet` operator. In order to run inference on an incoming image, simply connect a node that provides an `IplImage` type to `PredictMoveNet`. E.g:
 
 ![WorkflowExample](./docs/images/workflow_example.svg)
 
@@ -40,11 +40,14 @@ The output of the model (`Pose`) can be indexed using one of the following 17 hu
 - right_ankle
 ```
 
-
 ## How to download pre-exported networks:
 
-Network files are available from this [link](https://neurogears-my.sharepoint.com/:f:/g/personal/b_cruz_neurogears_org/EhCLgMqeieRJhV1DJeZJTzUBBV4gTgefBLHYBxG_A_lB6g?e=B1BGBq). They should be placed inside "./Externals/Networks" folder.
+Network files are available from [TensorFlow Hub](https://tfhub.dev/):
+- [movenet/singlepose/lightning](https://tfhub.dev/google/movenet/singlepose/lightning/4)
+- [movenet/singlepose/thunder](https://tfhub.dev/google/movenet/singlepose/thunder/4)
+- [movenet/multipose/lightning](https://tfhub.dev/google/movenet/multipose/lightning/1)
 
+All downloaded network .pb files should be placed inside `src/Externals/Networks` in order to build the project successfully.
 
 ## How to export the .pb files
 
@@ -93,4 +96,3 @@ tf.io.write_graph(graph_or_graph_def=frozen_func.graph,
                 as_text=False)
 
 ```
-
