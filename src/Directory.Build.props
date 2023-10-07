@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
-    <Authors>Bonsai</Authors>
-    <Copyright>Copyright © Bonsai Foundation CIC 2022</Copyright>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageProjectUrl>https://github.com/bruno-f-cruz/Movenet</PackageProjectUrl>
-    <PackageLicenseUrl>https://bonsai-rx.org/license</PackageLicenseUrl>
-    <PackageIconUrl>https://bonsai-rx.org/assets/images/bonsai.png</PackageIconUrl>
-    <IncludeSymbols Condition="'$(Configuration)'=='Release'">true</IncludeSymbols>
-    <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Authors>Bonsai Foundation</Authors>
+    <Copyright>Copyright © Bonsai Foundation CIC and Contributors 2023</Copyright>
+    <PackageProjectUrl>https://github.com/bonsai-rx/movenet</PackageProjectUrl>
     <PackageOutputPath>..\bin\$(Configuration)</PackageOutputPath>
+    <IncludeSymbols Condition="'$(Configuration)'=='Release'">true</IncludeSymbols>
+    <SymbolPackageFormat Condition="'$(Configuration)'=='Release'">snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/bonsai-rx/numerics.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <VersionSuffix></VersionSuffix>
     <Features>strict</Features>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\LICENSE" PackagePath="/" />
+    <Content Include="..\..\icon.png" PackagePath="/" />
+  </ItemGroup>
 </Project>

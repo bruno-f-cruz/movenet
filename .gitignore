@@ -4,6 +4,4 @@ obj
 *.user
 *.suo
 *.layout
-movies
-models
-Externals/Networks/**
+Networks

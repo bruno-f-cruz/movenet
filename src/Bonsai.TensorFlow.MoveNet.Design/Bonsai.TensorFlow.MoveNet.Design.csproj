@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <Title>Bonsai - MoveNet Design Library</Title>
-    <Description>Bonsai Library containing reactive visualizations for the MoveNet Library.</Description>
-    <PackageTags>Bonsai Rx Visualizers Movenet Human Pose</PackageTags>
+    <Description>Bonsai Library containing reactive visualizations for pose estimation using MoveNet.</Description>
+    <PackageTags>Bonsai Rx Visualizers MoveNet Pose Estimation</PackageTags>
     <TargetFramework>net472</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <VersionPrefix>0.1.0-preview130701</VersionPrefix>
+    <VersionPrefix>0.1.0</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
