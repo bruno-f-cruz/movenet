@@ -4,8 +4,6 @@ using System.Linq;
 using System.Reactive.Linq;
 using OpenCV.Net;
 using TensorFlow;
-using System.Reflection;
-using System.IO;
 
 namespace Bonsai.TensorFlow.MoveNet
 {
@@ -22,7 +20,7 @@ namespace Bonsai.TensorFlow.MoveNet
         /// <summary>
         /// Expected input image size.
         /// </summary>
-        private int InputSize= 192;
+        const int InputSize= 192;
 
         /// <summary>
         /// Gets or sets a value specifying the confidence threshold used to discard predicted
@@ -51,17 +49,10 @@ namespace Bonsai.TensorFlow.MoveNet
                 TFTensor tensor = null;
                 TFSession.Runner runner = null;
                 var availableBodyParts = ExtensionMethods.GetBodyParts();
-
-                var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                const string ModelName = "movenet_singlepose_lightning_v4.pb";
-                var defaultPath = Path.Combine(basePath, ModelName);
-
-                if (!File.Exists(defaultPath)) defaultPath = Path.Combine(basePath, "..\\..\\content\\", ModelName);
-
-                var graph = TensorHelper.ImportModel(defaultPath, out TFSession session);
+                var modelPath = ResourceHelper.FindResourcePath("movenet_singlepose_lightning_v4.pb");
+                var graph = TensorHelper.ImportModel(modelPath, out TFSession session);
                 
                 var tensorSize = new Size(InputSize, InputSize);
-                
                 return source.Select(input =>
                 {
                     int colorChannels = input[0].Channels;
@@ -97,8 +88,8 @@ namespace Bonsai.TensorFlow.MoveNet
                         part.Confidence = out0_arr[0, 0, i, 2];
                         if (part.Confidence > MinimumConfidence)
                         {
-                            part.Position.X = out0_arr[0, 0, i, 1] * (float)initialSize.Width;
-                            part.Position.Y = out0_arr[0, 0, i, 0] * (float)initialSize.Height;
+                            part.Position.X = out0_arr[0, 0, i, 1] * initialSize.Width;
+                            part.Position.Y = out0_arr[0, 0, i, 0] * initialSize.Height;
                         }
                         else
                         {

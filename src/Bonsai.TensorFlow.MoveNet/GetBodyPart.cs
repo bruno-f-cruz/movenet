@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
-using static System.ComponentModel.TypeConverter;
 
 namespace Bonsai.TensorFlow.MoveNet
 {
