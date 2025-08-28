@@ -47,7 +47,7 @@ namespace Bonsai.TensorFlow.MoveNet
                 DType,
                 new long[] { batchSize, frameSize.Height, frameSize.Width, TensorChannels },
                 batchSize * frameSize.Width * frameSize.Height * TensorChannels * numberOfBytes);
-            runner.AddInput(graph["x"][0], tensor); 
+            runner.AddInput(graph["x"][0], tensor);
             return tensor;
         }
 
@@ -75,6 +75,21 @@ namespace Bonsai.TensorFlow.MoveNet
                 }
                 CV.Resize(frame, resizeTemp);
                 frame = resizeTemp;
+            }
+            return frame;
+        }
+
+        public static IplImage EnsureColorFormat(IplImage frame, ColorConversion? colorConversion, ref IplImage colorTemp)
+        {
+            if (colorConversion != null)
+            {
+                var nChannels = ExtensionMethods.GetConversionNumChannels(colorConversion.Value);
+                if (colorTemp == null || colorTemp.Size != frame.Size | colorTemp.Channels != nChannels)
+                {
+                    colorTemp = new IplImage(frame.Size, frame.Depth, nChannels);
+                }
+                CV.CvtColor(frame, colorTemp, colorConversion.Value);
+                frame = colorTemp;
             }
             return frame;
         }

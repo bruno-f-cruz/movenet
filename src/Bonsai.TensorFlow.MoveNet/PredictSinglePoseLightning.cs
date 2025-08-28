@@ -32,6 +32,12 @@ namespace Bonsai.TensorFlow.MoveNet
         public float MinimumConfidence { get; set; } = 0;
 
         /// <summary>
+        /// Gets or sets the optional color conversion used to prepare images for inference.
+        /// </summary>
+        [Description("The optional color conversion used to prepare images for inference.")]
+        public ColorConversion? ColorConversion { get; set; } = OpenCV.Net.ColorConversion.Bgr2Rgb;
+
+        /// <summary>
         /// Performs markerless, single instance, human pose estimation for each array
         /// of images in an observable sequence using a "movenet_singlepose_lightning_v4" model.
         /// </summary>
@@ -46,12 +52,13 @@ namespace Bonsai.TensorFlow.MoveNet
             return Observable.Defer(() =>
             {
                 IplImage resizeTemp = null;
+                IplImage colorTemp = null;
                 TFTensor tensor = null;
                 TFSession.Runner runner = null;
                 var availableBodyParts = ExtensionMethods.GetBodyParts();
                 var modelPath = ResourceHelper.FindResourcePath("movenet_singlepose_lightning_v4.pb");
                 var graph = TensorHelper.ImportModel(modelPath, out TFSession session);
-                
+
                 var tensorSize = new Size(InputSize, InputSize);
                 return source.Select(input =>
                 {
@@ -61,7 +68,7 @@ namespace Bonsai.TensorFlow.MoveNet
                     var batchSize = input.Length;
                     if (batchSize > 1) { throw new NotImplementedException("Batch processing not implemented"); }
 
-                    if (tensor == null || tensor.Shape[0] != batchSize || tensor.Shape[1] != tensorSize.Height || tensor.Shape[2] != tensorSize.Width )
+                    if (tensor == null || tensor.Shape[0] != batchSize || tensor.Shape[1] != tensorSize.Height || tensor.Shape[2] != tensorSize.Width)
                     {
                         tensor?.Dispose();
                         runner = session.GetRunner();
@@ -69,9 +76,10 @@ namespace Bonsai.TensorFlow.MoveNet
                         runner.Fetch(graph["Identity"][0]);
                     }
 
-                    var frames = Array.ConvertAll(input, frame => 
+                    var frames = Array.ConvertAll(input, frame =>
                     {
                         frame = TensorHelper.EnsureFrameSize(frame, tensorSize, ref resizeTemp);
+                        frame = TensorHelper.EnsureColorFormat(frame, ColorConversion, ref colorTemp);
                         return frame;
                     });
                     TensorHelper.UpdateTensor(tensor, colorChannels, Depth.S32, frames);

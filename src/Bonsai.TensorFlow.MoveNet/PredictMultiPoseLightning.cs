@@ -32,6 +32,12 @@ namespace Bonsai.TensorFlow.MoveNet
         public float MinimumConfidence { get; set; } = 0;
 
         /// <summary>
+        /// Gets or sets the optional color conversion used to prepare images for inference.
+        /// </summary>
+        [Description("The optional color conversion used to prepare images for inference.")]
+        public ColorConversion? ColorConversion { get; set; } = OpenCV.Net.ColorConversion.Bgr2Rgb;
+
+        /// <summary>
         /// Performs markerless, multiple instance (<6), pose estimation for each array
         /// of images in an observable sequence using a movenet_multipose_lighting_v1 model.
         /// </summary>
@@ -46,6 +52,7 @@ namespace Bonsai.TensorFlow.MoveNet
             return Observable.Defer(() =>
             {
                 IplImage resizeTemp = null;
+                IplImage colorTemp = null;
                 TFTensor tensor = null;
                 TFSession.Runner runner = null;
                 var availableBodyParts = ExtensionMethods.GetBodyParts();
@@ -72,6 +79,7 @@ namespace Bonsai.TensorFlow.MoveNet
                     var frames = Array.ConvertAll(input, frame => 
                     {
                         frame = TensorHelper.EnsureFrameSize(frame, tensorSize, ref resizeTemp);
+                        frame = TensorHelper.EnsureColorFormat(frame, ColorConversion, ref colorTemp);
                         return frame;
                     });
                     TensorHelper.UpdateTensor(tensor, colorChannels, Depth.S32, frames);
