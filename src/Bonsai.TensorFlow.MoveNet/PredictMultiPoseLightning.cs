@@ -68,7 +68,7 @@ namespace Bonsai.TensorFlow.MoveNet
                     var batchSize = input.Length;
                     if (batchSize > 1) { throw new NotImplementedException("Batch processing not implemented"); }
 
-                    if (tensor == null || tensor.Shape[0] != batchSize || tensor.Shape[1] != tensorSize.Height || tensor.Shape[2] != tensorSize.Width )
+                    if (tensor == null || tensor.Shape[0] != batchSize || tensor.Shape[1] != tensorSize.Height || tensor.Shape[2] != tensorSize.Width || tensor.Shape[3] != colorChannels)
                     {
                         tensor?.Dispose();
                         runner = session.GetRunner();
