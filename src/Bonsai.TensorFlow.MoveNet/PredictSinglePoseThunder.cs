@@ -63,7 +63,7 @@ namespace Bonsai.TensorFlow.MoveNet
                 var tensorSize = new Size(InputSize, InputSize);
                 return source.Select(input =>
                 {
-                    int colorChannels = input[0].Channels;
+                    int colorChannels = ColorConversion.HasValue ? ExtensionMethods.GetConversionNumChannels(ColorConversion.Value) : input[0].Channels;
                     var initialSize = input[0].Size;
 
                     var batchSize = input.Length;
